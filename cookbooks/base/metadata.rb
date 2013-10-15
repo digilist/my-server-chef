@@ -1,0 +1,6 @@
+name             'base'
+maintainer       'Markus Fasselt'
+maintainer_email 'web@mfasselt.de'
+license          'MIT'
+description      'Installs/Configures base'
+version          '0.1.0'

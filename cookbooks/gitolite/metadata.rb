@@ -1,0 +1,6 @@
+name             'gitolite'
+maintainer       'Markus Fasselt'
+maintainer_email 'web@mfasselt.de'
+license          'MIT'
+description      'Installs/Configures gitolite'
+version          '0.1.0'

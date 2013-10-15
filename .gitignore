@@ -1,0 +1,7 @@
+.vagrant
+.idea
+chef-cookbooks.iml
+chef-client-running.pid
+chef-stacktrace.out
+vendor
+solo-prod.json

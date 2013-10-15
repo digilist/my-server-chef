@@ -1,0 +1,6 @@
+name             'vcs'
+maintainer       'Markus Fasselt'
+maintainer_email 'web@mfasselt.de'
+license          'MIT'
+description      'Installs/Configures vcs (version control systems)'
+version          '0.1.0'

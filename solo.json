@@ -1,0 +1,46 @@
+{
+    "run_list": [
+    	"apt",
+		"base",
+		"ssh",
+		"nginx",
+		"php",
+		"mysql",
+		"users",
+		"gitolite"
+	],
+	
+	"gitolite": {
+		"init_user": "example",
+		"init_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD960Lja3zKcOM+MnTF4hr3m/+RAgDZtV5Bu0Zejy6uun/wdHYa1iTCVu0E0PmqHys2B1uB8O8D2bM5g7Umr4wPHXwcNNEBqo9GqNxMYvtpKD+cKZWykbhntrCuitJOwhh8tXwtsj+IW2FQjAYf5m/ChJvmB13AmS852+httbRdtrdxs+7Rp/YmH7XLSK183fIwRi9XXj5byd8ECq5lY9Th4avZye0sq8r3IUzniQhis8DurPhlXgYLsT8WrK6dHhO3fNqXHN9x3xtKm78GIXU3J3SZaGzeHZOQND0E2T0Ev0wt62lHrzOH6LeMjzu3NUXi4Yb4Q6meWnixmyJmTrzR example"
+	},
+	
+	"root_password":			"foobar",
+	"root_mysql_password":		"foobar",
+	
+	"users": {
+		"example": {
+			"home":				"/home/example",
+			"password":			"bar",
+			"mysql_password":	"bla",
+			"mysql_databases":	["example_com", "example_org"],
+			"vhosts": [
+				{
+					"domains":				["www.example.com"],
+					"redirect_domains":		{"www.example.com": "example.com"},
+					"www_root":				"example.com"
+				},
+				{
+					"domains":				["example.org"],
+					"redirect_domains":		{"www.example.org": "example.org"},
+					"www_root":				"example.org"
+				},
+				{
+					"domains":				["example-python.org"],
+					"mysql_db":				"example_org",
+					"fcgi_pass":			"127.0.0.1:9000"
+				},
+			]
+		}
+	}
+}
