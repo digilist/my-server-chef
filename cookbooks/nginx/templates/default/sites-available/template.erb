@@ -35,7 +35,7 @@ server {
 	index index.php index.html index.htm;
 	
 	location / {
-		index index.php;
+		index index.php index.html index.htm;
 		try_files $uri $uri/ /index.html /index.php;
 	}
 	

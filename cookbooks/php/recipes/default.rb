@@ -41,6 +41,7 @@ package 'php5-intl'
 package 'php-pear'
 
 service 'php5-fpm' do
+	provider Chef::Provider::Service::Upstart
 	# start is graceful and includes reloading
 	supports [:start, :stop, :restart, :reload]
 end

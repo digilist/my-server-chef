@@ -63,17 +63,17 @@ node[:users].each do |username, user|
 			www_root = vhost.fetch(:www_root, '')
 			project_root = "#{user_www_dir}/#{www_root}"
 
-			# create www directory for user
-			directory project_root do
-				mode 0750
-				user username
-				group node[:webserver][:group]
-				recursive true
-			end
-
 			# create project directory with an initial file
 			if not File.directory? project_root
-				directory project_root
+				
+				# create project folder for user
+				directory project_root do
+					mode 0750
+					user username
+					group node[:webserver][:group]
+					recursive true
+				end
+			
 				file "#{project_root}/index.html" do
 					owner username
 					group username

@@ -71,6 +71,6 @@ I am currently using it within a Ubuntu 13.04 box, so I don't know how it behave
 My Todo List (or things that will come soon)
 --------------
 - Fail2Ban
-- Firewall
 - MyWebSQL
 - IDS (maybe...)
+- Bin

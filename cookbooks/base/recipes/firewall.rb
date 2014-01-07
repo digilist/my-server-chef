@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: ssh
-# Recipe:: default
+# Cookbook Name:: base
+# Recipe:: firewall
 #
 # Copyright 2013, Markus Fasselt
 #
@@ -24,25 +24,15 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-package "openssh-server"
 
-service "ssh" do
-	supports [:start, :stop, :restart]
-	action :nothing
+# this must be the last recipe!
+
+
+# enable firewall
+firewall 'ufw' do
+  action :enable
 end
 
-users = node[:users].keys
-users << 'root'
-users << 'vagrant' if File.exists? '/vagrant' # if this is a vagrant box
-
-template 'sshd_config' do
-	path "#{node[:ssh][:conf_dir]}/sshd_config"
-	mode 0600
-	variables :users => users
-	notifies :restart, resources(:service => 'ssh')
-end
-
-firewall_rule 'ssh' do
-  port     22
-  action   :allow
+firewall_rule "generally reject all public traffic" do
+	action :reject
 end

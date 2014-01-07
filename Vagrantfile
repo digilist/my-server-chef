@@ -11,11 +11,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	end
 	
 #	config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/current/raring-server-cloudimg-amd64-vagrant-disk1.box"
-	config.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-13.04_provisionerless.box"
-	config.vm.box = "raring64-opscode"
+	config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box"
+	config.vm.box = "saucy64-opscode"
 	config.vm.hostname = "server.example.com"
 
 	config.vm.network :private_network, ip: "10.33.33.33"
+	config.vm.network :public_network
 		
 	config.vm.provision :shell, :inline => <<SCRIPT
 #!/bin/bash

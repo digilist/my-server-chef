@@ -53,6 +53,10 @@ template 'nginx-default-vhost' do
 	notifies :restart, resources(:service => 'nginx')
 end
 
+link "#{node[:nginx][:dir]}/sites-enabled/default" do
+	to "#{node[:nginx][:dir]}/sites-available/default"
+end
+
 # create www root
 directory node[:webserver][:virtual_root] do
 	user node[:webserver][:user]
@@ -67,4 +71,11 @@ directory "#{node[:nginx][:dir]}/sites-available" do
 end
 directory "#{node[:nginx][:dir]}/sites-enabled" do
 	mode 0750
+end
+
+# firewall settings
+firewall_rule 'http/https' do
+	protocol :tcp
+	ports [80, 443]
+	action :allow
 end

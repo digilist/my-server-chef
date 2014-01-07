@@ -1,13 +1,15 @@
 {
     "run_list": [
     	"apt",
+		"firewall",
 		"base",
 		"ssh",
 		"nginx",
 		"php",
 		"mysql",
 		"users",
-		"gitolite"
+		"gitolite",
+		"base::firewall"
 	],
 	
 	"gitolite": {
@@ -27,19 +29,14 @@
 			"vhosts": [
 				{
 					"domains":				["www.example.com"],
-					"redirect_domains":		{"www.example.com": "example.com"},
-					"www_root":				"example.com"
-				},
-				{
-					"domains":				["example.org"],
-					"redirect_domains":		{"www.example.org": "example.org"},
-					"www_root":				"example.org"
+					"redirect_domains":		{"example.com": "www.example.com"},
+					"www_root":				"example.com/web"
 				},
 				{
 					"domains":				["example-python.org"],
 					"mysql_db":				"example_org",
 					"fcgi_pass":			"127.0.0.1:9000"
-				},
+				}
 			]
 		}
 	}

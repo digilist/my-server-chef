@@ -36,7 +36,7 @@ package 'curl'
 package 'wget'
 package 'unzip'
 
-#include_recipe 'base::zsh'
+include_recipe 'base::zsh'
 
 user 'root' do
 	password (`openssl passwd -1 "#{node[:root_password]}"`.strip!)  if node.has_key? :root_password
