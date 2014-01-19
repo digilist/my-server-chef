@@ -28,7 +28,8 @@ package "openssh-server"
 
 service "ssh" do
 	supports [:start, :stop, :restart]
-	action :nothing
+  provider Chef::Provider::Service::Upstart
+  action :nothing
 end
 
 users = node[:users].keys

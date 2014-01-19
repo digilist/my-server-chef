@@ -45,9 +45,9 @@ if not File.exists? node[:mywebsql][:home]
 
   # get mywebsql
   tmpFile = '/tmp/mywebsql.zip'
-  #remote_file tmpFile do
-  #  source node[:mywebsql][:download_url]
-  #end
+  remote_file tmpFile do
+    source node[:mywebsql][:download_url]
+  end
   
   # extract archive
   execute "unzip #{tmpFile} -d #{node[:mywebsql][:home]}" do
