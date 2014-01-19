@@ -7,6 +7,8 @@ server {
 
 	server_name localhost;
 
+	include /etc/nginx/global.d/*.conf;
+	
 	location / {
 		try_files $uri $uri/ /index.html;
 	}

@@ -1,0 +1,15 @@
+location /mywebsql {
+	alias <%= node[:mywebsql][:home] %>;
+	
+	index index.php index.html index.htm;
+	try_files $uri $uri/ /index.html /index.php;
+}
+
+location ~ ^/mywebsql/(.+\.php)$ {
+	alias <%= node[:mywebsql][:home] %>/$1;
+	fastcgi_param SCRIPT_FILENAME <%= node[:mywebsql][:home] %>$1;
+	fastcgi_split_path_info ^(.+\.php)(/.+)$;
+	fastcgi_pass unix:/var/run/php5-fpm-<%= node[:mywebsql][:user] %>.sock;
+	fastcgi_index index.php;
+	include fastcgi_params;
+}

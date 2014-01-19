@@ -18,6 +18,8 @@ server {
 	access_log <%= @log_dir %>/access-<%= @domains[0] %>.log;
 	error_log <%= @log_dir %>/error-<%= @domains[0] %>.log;
 
+	include /etc/nginx/global.d/*.conf;
+
 	<% if @vhost.has_key? :fcgi_proxy %>
 	location / {
 		try_files $uri @fcgi;
@@ -54,6 +56,7 @@ server {
 	location ~ /\.ht {
 		deny all;
 	}
+	
 }
 
 <% @redirects.each do |origin, destination| %>

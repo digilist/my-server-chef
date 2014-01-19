@@ -46,6 +46,11 @@ template 'nginx.conf' do
 	notifies :restart, resources(:service => 'nginx')
 end
 
+directory "#{node[:nginx][:dir]}/global.d" do
+  user node[:webserver][:user]
+  group node[:webserver][:group]
+end
+
 template 'nginx-default-vhost' do
 	source 'sites-available/default.erb'
 	path "#{node[:nginx][:dir]}/sites-available/default"

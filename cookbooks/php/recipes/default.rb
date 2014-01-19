@@ -38,6 +38,7 @@ package 'php5-cli'
 package 'php5-mysql'
 package 'php5-curl'
 package 'php5-intl'
+package 'php5-gmp'
 package 'php-pear'
 
 service 'php5-fpm' do

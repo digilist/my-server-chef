@@ -1,0 +1,6 @@
+name             'mywebsql'
+maintainer       'Markus Fasselt'
+maintainer_email 'web@mfasselt.de'
+license          'MIT'
+description      'Installs/Configures mywebsql'
+version          '0.1.0'
