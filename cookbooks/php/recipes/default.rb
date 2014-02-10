@@ -47,4 +47,11 @@ service 'php5-fpm' do
 	supports [:start, :stop, :restart, :reload]
 end
 
-#include_recipe 'php::composer'
+template 'php.ini' do
+	source 'fpm/php.ini'
+	path '/etc/php5/fpm/php.ini'
+
+	notifies :restart, resources(:service => 'php5-fpm')
+end
+
+include_recipe 'php::composer'

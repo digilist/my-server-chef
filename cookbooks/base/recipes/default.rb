@@ -35,6 +35,7 @@ package 'rsync'
 package 'curl'
 package 'wget'
 package 'unzip'
+package 'sendmail'
 
 include_recipe 'base::zsh'
 
