@@ -40,6 +40,11 @@
 					"fcgi_pass":			"127.0.0.1:9000"
 				}
 			]
+		},
+		"dummy": {
+			"home":				"/home/dummy",
+			"password":			"bar",
+			"shell":			"/bin/false"
 		}
 	}
 }

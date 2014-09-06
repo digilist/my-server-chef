@@ -27,9 +27,9 @@ listen = /var/run/php5-fpm-<%= @user %>.sock
 ; BSD-derived systems allow connections regardless of permissions. 
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0666
-;listen.owner = www-data
-;listen.group = www-data
-;listen.mode = 0666
+listen.owner = www-data
+listen.group = www-data
+listen.mode = 0666
  
 ; List of ipv4 addresses of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
@@ -288,13 +288,14 @@ pm.max_spare_servers = 3
 ; The log file for slow requests
 ; Default Value: not set
 ; Note: slowlog is mandatory if request_slowlog_timeout is set
-;slowlog = log/$pool.log.slow
- 
+slowlog = log/$pool.log.slow
+slowlog = <%= @log_dir %>/fpm-php-slow.log
+
 ; The timeout for serving a single request after which a PHP backtrace will be
 ; dumped to the 'slowlog' file. A value of '0s' means 'off'.
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0
-;request_slowlog_timeout = 0
+request_slowlog_timeout = 10s
  
 ; The timeout for serving a single request after which the worker process will
 ; be killed. This option should be used when the 'max_execution_time' ini option
@@ -373,7 +374,7 @@ chdir = /
 ;                specified at startup with the -d argument
 ;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
 ;php_flag[display_errors] = off
-;php_admin_value[error_log] = /var/log/fpm-php.www.log
-;php_admin_flag[log_errors] = on
-;php_admin_value[memory_limit] = 32M
 
+php_admin_value[error_log] = <%= @log_dir %>/fpm-php-error.log
+php_admin_flag[log_errors] = on
+php_admin_value[memory_limit] = 32M

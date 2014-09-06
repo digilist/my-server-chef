@@ -27,13 +27,13 @@
 define :nginx_site,
 	   :enable => true,
 	   :username => nil,
-	   :project_root => nil,
+	   :www_root => nil,
 	   :log_dir => nil,
 	   :domains => nil,
 	   :vhost => nil,
 	   :redirect_domains => {} do
 	
-	raise 'missing param' if params[:username].nil? || params[:project_root].nil? || params[:domains].nil? || params[:vhost].nil?
+	raise 'missing param' if params[:username].nil? || params[:domains].nil? || params[:vhost].nil?
 
 	if params[:enable]
 
@@ -42,12 +42,23 @@ define :nginx_site,
 			source 'sites-available/template.erb'
 			path "#{node[:nginx][:dir]}/sites-available/#{params[:name]}"
 
+			# locations
+			locations = {
+				'/' => "#{params[:www_root]}/#{params[:vhost][:www_root]}"
+			}
+			if params[:vhost].has_key? :locations
+				params[:vhost][:locations].each do |location, path|
+					locations[location] = "#{params[:www_root]}/#{path}"
+				end
+			end
+
 			variables :username			=> params[:username],
-					  :project_root		=> params[:project_root],
+					  :www_root			=> params[:www_root],
 					  :log_dir			=> params[:log_dir],
 					  :domains			=> params[:domains],
 					  :redirects		=> params[:redirect_domains],
-					  :vhost			=> params[:vhost]
+					  :vhost			=> params[:vhost],
+					  :locations		=> locations
 
 			notifies :restart, resources(:service => 'nginx')
 		end

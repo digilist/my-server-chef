@@ -33,7 +33,9 @@
 # 	enable false
  #end
 
-define :php_fpm_pool, :enable => true do
+define :php_fpm_pool,
+	   :enable => true,
+	   :log_dir => nil do
 	
 	filename = "#{node[:php][:fpm_pool_dir]}/#{params[:name]}.conf"
 	
@@ -44,7 +46,8 @@ define :php_fpm_pool, :enable => true do
 			path filename
 			cookbook "php"
 			
-			variables :user => params[:name]
+			variables :user => params[:name],
+					  :log_dir => params[:log_dir]
 			notifies :restart, 'service[php5-fpm]'
 		end
 	else

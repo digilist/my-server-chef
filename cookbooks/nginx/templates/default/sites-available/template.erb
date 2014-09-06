@@ -33,24 +33,40 @@ server {
 		fastcgi_pass				<%= @vhost[:fcgi_proxy] %>;
 	}
 	<% else # default www with php as fallback %>
-	root <%= @project_root %>;
 	index index.php index.html index.htm;
-	
-	location / {
-		index index.php index.html index.htm;
-		try_files $uri $uri/ /index.html /index.php?$query_string;
-	}
-	
-	#error_page 404 /404.html;
-	
-	location ~ \.php$ {
-		location ~ \..*/.*\.php$ {return 404;}
 
+	<% @locations.sort.reverse.each do |location, path| %>
+		<%
+			if location == '/'
+				try_location = location
+				php_location = ''
+				root_alias = 'root'
+				args = '?$args'
+			else
+				try_location = location + '/'
+				php_location = '^' + location + '/'
+				root_alias = 'alias'
+				args = ''
+			end
+		%>
+	location <%= location %> {
+		<%= root_alias %> <%= path %>;
+		try_files $uri $uri/ <%= try_location %>index.php<%= args %>;
+	}
+
+	# handle php files
+	location ~ <%= php_location %>(.+\.php)$ {
+		root <%= path %>;
+		try_files /$1 $uri $uri/ <%= try_location %>index.php;
+		include fastcgi_params;
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
 		fastcgi_pass unix:/var/run/php5-fpm-<%= @username %>.sock;
 		fastcgi_index index.php;
-		include fastcgi_params;
 	}
+	<% end %>
+
+	#error_page 404 /404.html;
+
 	<% end %>
 
 	location ~ /\.ht {
@@ -64,7 +80,7 @@ server {
 	listen 80;
 	server_name <%= origin %>;
 
-	rewrite / $scheme://<%= destination %>;
+	rewrite / $scheme://<%= destination %>$uri;
 }
 <% end %>
 

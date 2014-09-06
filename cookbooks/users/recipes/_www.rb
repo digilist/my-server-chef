@@ -26,17 +26,18 @@
 
 node[:users].each do |username, user|
 
-	# create php fpm pool
-	
-	php_fpm_pool username
-	
 	if user.has_key? :vhosts
 
 		user_virtual_root = "#{node[:webserver][:virtual_root]}/#{username}"
 		user_www_dir = "#{user_virtual_root}/#{node[:webserver][:www_dir]}"
 		fcgi_bin_dir = "#{user_virtual_root}/#{node[:webserver][:fcgi_dir]}"
 		log_dir = "#{user_virtual_root}/#{node[:webserver][:log_dir]}"
-		
+
+		# create php fpm pool
+		php_fpm_pool username do
+			log_dir log_dir
+		end
+
 		[user_virtual_root, user_www_dir, fcgi_bin_dir, log_dir].each do |dir|
 			directory dir do
 				mode 0750
@@ -44,15 +45,16 @@ node[:users].each do |username, user|
 				group node[:webserver][:group]
 			end
 		end
-		
+
+		# symlinks from home directory
 		link "#{user[:home]}/#{node[:webserver][:www_dir]}" do
 			to user_www_dir
 		end
-		link "#{user[:home]}/#{node[:webserver][:log_dir]}" do
-			to log_dir
-		end
 		link "#{user[:home]}/#{node[:webserver][:fcgi_dir]}" do
 			to fcgi_bin_dir
+		end
+		link "#{user[:home]}/#{node[:webserver][:log_dir]}" do
+			to log_dir
 		end
 
 		user[:vhosts].each do |vhost|
@@ -60,21 +62,21 @@ node[:users].each do |username, user|
 			main_domain = domains[0]
 			redirect_domains = vhost.fetch(:redirect_domains, {})
 			
-			www_root = vhost.fetch(:www_root, '')
-			project_root = "#{user_www_dir}/#{www_root}"
+			vhost_www_root = vhost.fetch(:www_root, '')
+			vhost_root = "#{user_www_dir}/#{vhost_www_root}"
 
 			# create project directory with an initial file
-			if not File.directory? project_root
+			if not File.directory? vhost_root
 				
 				# create project folder for user
-				directory project_root do
+				directory vhost_root do
 					mode 0750
 					user username
 					group node[:webserver][:group]
 					recursive true
 				end
 			
-				file "#{project_root}/index.html" do
+				file "#{vhost_root}/index.html" do
 					owner username
 					group username
 					mode 0644
@@ -86,7 +88,7 @@ node[:users].each do |username, user|
 			nginx_site main_domain do
 				enable true
 				username username
-				project_root project_root
+				www_root user_www_dir
 				log_dir log_dir
 				domains domains
 				redirect_domains redirect_domains
