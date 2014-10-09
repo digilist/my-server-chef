@@ -32,13 +32,19 @@
 				{
 					"domains":				["www.example.com"],
 					"redirect_domains":		{"example.com": "www.example.com"},
-					"www_root":				"example.com/web"
+					"www_root":				"example.com/web",
+					"ssl": {
+						"crt": "put certificate here",
+						"key": "put key here"
+					}
+
 				},
 				{
 					"domains":				["example-python.org"],
 					"mysql_db":				"example_org",
 					"fcgi_pass":			"127.0.0.1:9000"
 				}
+
 			]
 		},
 		"dummy": {

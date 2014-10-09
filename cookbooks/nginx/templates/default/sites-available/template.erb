@@ -11,9 +11,27 @@
 # Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
 ##
 
+<% if not @vhost[:ssl].to_s.empty? %>
 server {
 	listen 80;
 	server_name <%= @domains.join(' '); %>;
+
+	return 301 https://$server_name$request_uri;
+}
+<% end %>
+
+server {
+	server_name <%= @domains.join(' '); %>;
+
+	<% if not @vhost[:ssl].to_s.empty? %>
+	listen 443 ssl;
+
+	ssl on;
+	ssl_certificate <%= node[:nginx][:dir] %>/ssl/<%= @vhost_name %>.crt;
+	ssl_certificate_key <%= node[:nginx][:dir] %>/ssl/<%= @vhost_name %>.key;
+	<% else %>
+	listen 80;
+	<% end %>
 
 	access_log <%= @log_dir %>/access-<%= @domains[0] %>.log;
 	error_log <%= @log_dir %>/error-<%= @domains[0] %>.log;

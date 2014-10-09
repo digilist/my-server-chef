@@ -61,7 +61,7 @@ node[:users].each do |username, user|
 			domains = vhost[:domains]
 			main_domain = domains[0]
 			redirect_domains = vhost.fetch(:redirect_domains, {})
-			
+
 			vhost_www_root = vhost.fetch(:www_root, '')
 			vhost_root = "#{user_www_dir}/#{vhost_www_root}"
 
@@ -93,7 +93,7 @@ node[:users].each do |username, user|
 				domains domains
 				redirect_domains redirect_domains
 				vhost vhost
-				
+
 				notifies :restart, 'service[nginx]'
 			end
 		end

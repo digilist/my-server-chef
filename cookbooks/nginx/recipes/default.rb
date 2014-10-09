@@ -39,6 +39,13 @@ service 'nginx' do
 	action :nothing
 end
 
+
+directory "#{node[:nginx][:dir]}" do
+  user node[:webserver][:user]
+  group node[:webserver][:group]
+  mode 0700
+end
+
 template 'nginx.conf' do
 	source 'nginx.conf.erb'
 	path "#{node[:nginx][:dir]}/nginx.conf"
@@ -47,6 +54,11 @@ template 'nginx.conf' do
 end
 
 directory "#{node[:nginx][:dir]}/global.d" do
+  user node[:webserver][:user]
+  group node[:webserver][:group]
+end
+
+directory "#{node[:nginx][:dir]}/ssl" do
   user node[:webserver][:user]
   group node[:webserver][:group]
 end

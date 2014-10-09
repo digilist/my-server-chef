@@ -37,6 +37,20 @@ define :nginx_site,
 
 	if params[:enable]
 
+		if not defined?(params[:vhost][:ssl][:crt]).nil? and not defined?(params[:vhost][:ssl][:key]).nil?
+			ssl = params[:vhost][:ssl]
+
+			file 'ssl crt' do
+				path "#{node[:nginx][:dir]}/ssl/#{params[:name]}.crt"
+				content ssl[:crt]
+			end
+
+			file 'ssl key' do
+				path "#{node[:nginx][:dir]}/ssl/#{params[:name]}.key"
+				content ssl[:key]
+			end
+		end
+
 		template 'nginx-vhost' do
 			cookbook 'nginx'
 			source 'sites-available/template.erb'
@@ -52,7 +66,8 @@ define :nginx_site,
 				end
 			end
 
-			variables :username			=> params[:username],
+			variables :vhost_name		=> params[:name],
+					  :username			=> params[:username],
 					  :www_root			=> params[:www_root],
 					  :log_dir			=> params[:log_dir],
 					  :domains			=> params[:domains],
@@ -62,7 +77,7 @@ define :nginx_site,
 
 			notifies :restart, resources(:service => 'nginx')
 		end
-		
+
 		# symlink in sites-enableds
 		link "#{node[:nginx][:dir]}/sites-enabled/#{params[:name]}" do
 			to "#{node[:nginx][:dir]}/sites-available/#{params[:name]}"
@@ -70,7 +85,7 @@ define :nginx_site,
 
 			notifies :restart, 'service[nginx]'
 		end
-		
+
 	else
 		
 		# delete vhost and symlink
