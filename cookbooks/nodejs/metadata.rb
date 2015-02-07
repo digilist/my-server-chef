@@ -1,4 +1,4 @@
-name             'gitolite'
+name             'nodejs'
 maintainer       'Markus Fasselt'
 maintainer_email 'web@mfasselt.de'
 license          'MIT'

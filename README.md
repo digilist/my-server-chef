@@ -65,7 +65,7 @@ You can clone the gitolite-admin-Repository from git@example.com:gitolite-admin.
 Disclaimer
 ----------
 You can use this configuration for your own purposes. However, I give absolutely NO WARRANTY – use it at your own risk!
-I am currently using it within a Ubuntu 13.04 box, so I don't know how it behaves on other boxes!
+I am currently using it within a Ubuntu 14.04 box, so I don't know how it behaves on other boxes!
 
 
 My Todo List (or things that will come soon)

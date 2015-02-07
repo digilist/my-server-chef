@@ -9,6 +9,10 @@
 
 
 package 'phpmyadmin'
+group 'phpmyadmin'
+user 'phpmyadmin' do
+    group 'phpmyadmin'
+end
 
 include_recipe 'phpmyadmin::configuration'
 include_recipe 'phpmyadmin::mysql'
